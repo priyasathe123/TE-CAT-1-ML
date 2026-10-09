@@ -2,82 +2,227 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Machine Learning Technology Challenge</title>
 <style>
-body{font-family:Arial,sans-serif;background:#f4f7fb;margin:0;color:#222}
-.container{max-width:900px;margin:30px auto;background:#fff;padding:30px;border-radius:14px;box-shadow:0 4px 18px #0002}
-h1{text-align:center;color:#183b70}.info{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
-input[type=text]{padding:12px;border:1px solid #bbb;border-radius:7px;width:100%;box-sizing:border-box}
-button{padding:12px 20px;border:0;border-radius:8px;background:#1769aa;color:white;font-weight:bold;cursor:pointer}
-.center{text-align:center}#quiz,#result{display:none}.question{font-size:20px;font-weight:bold;margin:20px 0}
-.option{display:block;background:#f1f5f9;padding:13px;margin:10px 0;border-radius:8px;cursor:pointer}
-.option:hover{background:#e2e8f0}.nav{display:flex;justify-content:space-between;margin-top:25px}
-.progress{margin:15px 0;font-weight:bold;color:#1769aa}#score{font-size:28px;font-weight:bold;color:#1769aa}
-.review{margin-top:20px;text-align:left}.review div{padding:12px;margin:8px 0;border-radius:7px;background:#f5f5f5}
-.correct{border-left:5px solid #159447}.wrong{border-left:5px solid #d33}
-@media(max-width:650px){.info{grid-template-columns:1fr}}
+body{font-family:Arial,sans-serif;background:#eef4fb;margin:0;padding:20px;color:#222}
+.container{max-width:850px;margin:auto;background:white;padding:28px;border-radius:14px;box-shadow:0 4px 18px rgba(0,0,0,.12)}
+h1{text-align:center;color:#174a7e}
+.center{text-align:center}
+input[type="text"]{width:100%;box-sizing:border-box;padding:13px;margin:7px 0;border:1px solid #aaa;border-radius:7px;font-size:16px}
+button{background:#1769aa;color:white;border:0;padding:13px 22px;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer}
+button:hover{background:#0e527f}
+#quiz,#result{display:none}
+.option{display:block;background:#f1f5f9;padding:14px;margin:10px 0;border-radius:8px;cursor:pointer}
+.question{font-size:20px;font-weight:bold;margin:20px 0}
+.progress{font-weight:bold;color:#1769aa;margin-bottom:10px}
+.nav{display:flex;justify-content:space-between;margin-top:25px}
+.review div{padding:12px;margin:8px 0;background:#f5f5f5;border-radius:7px}
+.correct{border-left:5px solid green}.wrong{border-left:5px solid red}
+#score{font-size:32px;font-weight:bold;color:#1769aa}
 </style>
 </head>
 <body>
 <div class="container">
+
 <h1>📘 Machine Learning Technology Challenge</h1>
+
 <div id="startScreen">
-<p class="center">10 Questions • 10 Marks • Machine Learning Syllabus</p>
-<div class="info">
+<p class="center"><b>10 Questions | 10 Marks</b></p>
+<p class="center">Enter your details and click the button below.</p>
+
 <input type="text" id="studentName" placeholder="Student Name">
 <input type="text" id="rollNo" placeholder="Roll No / PRN">
+
+<div class="center" style="margin-top:20px">
+<button type="button" id="startButton">START CHALLENGE</button>
 </div>
-<div class="center"><button onclick="startQuiz()">START EXAMINATION</button></div>
 </div>
+
 <div id="quiz">
-<div class="progress" id="progress"></div><div id="questionBox"></div>
-<div class="nav"><button id="prevBtn" onclick="previousQuestion()">← Previous</button>
-<button id="nextBtn" onclick="nextQuestion()">Next →</button></div>
+<div class="progress" id="progress"></div>
+<div id="questionBox"></div>
+<div class="nav">
+<button type="button" id="prevButton">← Previous</button>
+<button type="button" id="nextButton">Next →</button>
 </div>
+</div>
+
 <div id="result">
-<h2 class="center">🎉 Examination Completed</h2><p class="center" id="studentInfo"></p>
-<p class="center">Your Final Score</p><div class="center" id="score"></div>
-<div class="center" id="message"></div><div class="review" id="review"></div>
-<div class="center"><button onclick="window.print()">🖨 Print / Save Result</button></div>
+<h2 class="center">🎉 Challenge Completed</h2>
+<p class="center" id="studentInfo"></p>
+<p class="center">Final Score</p>
+<div class="center" id="score"></div>
+<p class="center" id="message"></p>
+<div class="review" id="review"></div>
+<div class="center" style="margin-top:20px">
+<button type="button" onclick="window.print()">🖨 Print / Save Result</button>
 </div>
 </div>
+
+</div>
+
 <script>
-const questions=[
-{q:"Which type of learning uses labelled input-output examples to learn a predictive model?",o:["Supervised learning","Unsupervised learning","Instance-based learning only","Random search"],a:0},
-{q:"Which method evaluates a model by dividing the dataset into k subsets and using different subsets for training and validation?",o:["Feature reduction","k-fold cross-validation","Kernel mapping","Collaborative filtering"],a:1},
-{q:"What is the main purpose of inductive bias in machine learning?",o:["To increase the size of the dataset","To provide assumptions that help a learner generalize from training data","To remove all features","To calculate only accuracy"],a:1},
-{q:"Which technique is commonly used to predict a continuous numerical value such as house price?",o:["Linear regression","Logistic regression","Clustering","Decision tree classification"],a:0},
-{q:"What is a major risk when a decision tree becomes excessively complex and fits the training data too closely?",o:["Under-sampling","Overfitting","Normalization","Dimensionality increase"],a:1},
-{q:"In Bayes learning, what is updated when new evidence is observed?",o:["The prior probability to obtain a posterior probability","The feature count to zero","The training set size","The kernel degree only"],a:0},
-{q:"What is the primary use of logistic regression?",o:["Predicting a continuous temperature value","Binary or categorical classification using probabilities","Reducing image dimensions","Finding clusters without labels"],a:1},
-{q:"What is the main objective of a Support Vector Machine?",o:["Find a decision boundary with a suitable maximum margin between classes","Generate random training samples","Always reduce the number of features to one","Perform only time-series forecasting"],a:0},
-{q:"What is the purpose of a kernel function in SVM?",o:["To calculate student marks","To enable learning of nonlinear relationships by implicitly mapping data to a higher-dimensional feature space","To remove the test dataset","To replace model evaluation"],a:1},
-{q:"Which statement best describes a Deep Neural Network (DNN)?",o:["A model containing multiple interconnected hidden layers that learn representations from data","A rule-based system containing only IF-THEN statements","A database indexing method","A technique used only for sorting numbers"],a:0}
+(function(){
+
+var questions = [
+{
+q:"Which type of learning uses labelled input-output examples to learn a predictive model?",
+o:["Supervised learning","Unsupervised learning","Instance-based learning only","Random search"],
+a:0
+},
+{
+q:"Which method evaluates a model by dividing the dataset into k subsets and using different subsets for training and validation?",
+o:["Feature reduction","k-fold cross-validation","Kernel mapping","Collaborative filtering"],
+a:1
+},
+{
+q:"What is the main purpose of inductive bias in machine learning?",
+o:["To increase the size of the dataset","To provide assumptions that help a learner generalize from training data","To remove all features","To calculate only accuracy"],
+a:1
+},
+{
+q:"Which technique is commonly used to predict a continuous numerical value such as house price?",
+o:["Linear regression","Logistic regression","Clustering","Decision tree classification"],
+a:0
+},
+{
+q:"What is a major risk when a decision tree becomes excessively complex and fits the training data too closely?",
+o:["Under-sampling","Overfitting","Normalization","Dimensionality increase"],
+a:1
+},
+{
+q:"In Bayes learning, what is updated when new evidence is observed?",
+o:["The prior probability to obtain a posterior probability","The feature count to zero","The training set size","The kernel degree only"],
+a:0
+},
+{
+q:"What is the primary use of logistic regression?",
+o:["Predicting a continuous temperature value","Binary or categorical classification using probabilities","Reducing image dimensions","Finding clusters without labels"],
+a:1
+},
+{
+q:"What is the main objective of a Support Vector Machine?",
+o:["Find a decision boundary with a suitable maximum margin between classes","Generate random training samples","Always reduce the number of features to one","Perform only time-series forecasting"],
+a:0
+},
+{
+q:"What is the purpose of a kernel function in SVM?",
+o:["To calculate student marks","To enable learning of nonlinear relationships by implicitly mapping data to a higher-dimensional feature space","To remove the test dataset","To replace model evaluation"],
+a:1
+},
+{
+q:"Which statement best describes a Deep Neural Network (DNN)?",
+o:["A model containing multiple interconnected hidden layers that learn representations from data","A rule-based system containing only IF-THEN statements","A database indexing method","A technique used only for sorting numbers"],
+a:0
+}
 ];
-let current=0,selected=Array(questions.length).fill(null),studentName="",rollNo="";
-function startQuiz(){
-studentName=document.getElementById("studentName").value.trim();rollNo=document.getElementById("rollNo").value.trim();
-if(!studentName||!rollNo){alert("Please enter Student Name and Roll No / PRN.");return;}
-document.getElementById("startScreen").style.display="none";document.getElementById("quiz").style.display="block";showQuestion();
+
+var current = 0;
+var answers = [];
+var studentName = "";
+var rollNo = "";
+
+function $(id){ return document.getElementById(id); }
+
+function startChallenge(){
+    studentName = $("studentName").value.trim();
+    rollNo = $("rollNo").value.trim();
+
+    if(studentName === ""){
+        alert("Please enter Student Name.");
+        $("studentName").focus();
+        return;
+    }
+
+    if(rollNo === ""){
+        alert("Please enter Roll No / PRN.");
+        $("rollNo").focus();
+        return;
+    }
+
+    current = 0;
+    answers = new Array(questions.length);
+    $("startScreen").style.display = "none";
+    $("quiz").style.display = "block";
+    showQuestion();
 }
+
 function showQuestion(){
-const q=questions[current];document.getElementById("progress").textContent=`Question ${current+1} of ${questions.length}`;
-let h=`<div class="question">${current+1}. ${q.q}</div>`;
-q.o.forEach((op,i)=>h+=`<label class="option"><input type="radio" name="answer" value="${i}" ${selected[current]===i?"checked":""} onchange="selected[${current}]=${i}"> ${op}</label>`);
-document.getElementById("questionBox").innerHTML=h;
-document.getElementById("prevBtn").style.visibility=current===0?"hidden":"visible";
-document.getElementById("nextBtn").textContent=current===questions.length-1?"FINISH & SHOW SCORE":"Next →";
+    var q = questions[current];
+    $("progress").textContent = "Question " + (current+1) + " of " + questions.length;
+
+    var html = '<div class="question">' + (current+1) + ". " + q.q + "</div>";
+
+    for(var i=0;i<q.o.length;i++){
+        var checked = answers[current] === i ? " checked" : "";
+        html += '<label class="option"><input type="radio" name="answer" value="' + i + '"' + checked + '> ' + q.o[i] + '</label>';
+    }
+
+    $("questionBox").innerHTML = html;
+
+    var radios = document.querySelectorAll('input[name="answer"]');
+    for(var j=0;j<radios.length;j++){
+        radios[j].addEventListener("change", function(){
+            answers[current] = Number(this.value);
+        });
+    }
+
+    $("prevButton").style.visibility = current === 0 ? "hidden" : "visible";
+    $("nextButton").textContent = current === questions.length-1 ? "FINISH & SHOW SCORE" : "NEXT →";
 }
-function previousQuestion(){if(current>0){current--;showQuestion();}}
-function nextQuestion(){if(selected[current]===null){alert("Please select an answer.");return;}if(current<questions.length-1){current++;showQuestion();}else finishQuiz();}
+
+function nextQuestion(){
+    if(typeof answers[current] === "undefined"){
+        alert("Please select an answer before continuing.");
+        return;
+    }
+
+    if(current < questions.length-1){
+        current++;
+        showQuestion();
+    }else{
+        finishQuiz();
+    }
+}
+
+function previousQuestion(){
+    if(current > 0){
+        current--;
+        showQuestion();
+    }
+}
+
 function finishQuiz(){
-let score=selected.reduce((s,a,i)=>s+(a===questions[i].a?1:0),0);
-document.getElementById("quiz").style.display="none";document.getElementById("result").style.display="block";
-document.getElementById("studentInfo").textContent=`Student: ${studentName} | Roll No / PRN: ${rollNo}`;
-document.getElementById("score").textContent=`${score} / ${questions.length}`;
-document.getElementById("message").textContent=score>=5?"PASS":"NEEDS IMPROVEMENT";
-let r="";questions.forEach((q,i)=>{let ok=selected[i]===q.a;r+=`<div class="${ok?"correct":"wrong"}"><b>Q${i+1}:</b> ${q.q}<br>Your answer: ${selected[i]!==null?q.o[selected[i]]:"Not answered"}<br>Correct answer: <b>${q.o[q.a]}</b></div>`});
-document.getElementById("review").innerHTML=r;
+    var score = 0;
+    for(var i=0;i<questions.length;i++){
+        if(answers[i] === questions[i].a) score++;
+    }
+
+    $("quiz").style.display = "none";
+    $("result").style.display = "block";
+
+    $("studentInfo").textContent = "Student: " + studentName + " | Roll No / PRN: " + rollNo;
+    $("score").textContent = score + " / " + questions.length;
+    $("message").textContent = score >= 5 ? "PASS" : "NEEDS IMPROVEMENT";
+
+    var review = "";
+    for(var k=0;k<questions.length;k++){
+        var correct = answers[k] === questions[k].a;
+        var your = typeof answers[k] === "undefined" ? "Not answered" : questions[k].o[answers[k]];
+        review += '<div class="' + (correct ? "correct" : "wrong") + '">' +
+            "<b>Q" + (k+1) + ".</b> " + questions[k].q + "<br>" +
+            "Your answer: " + your + "<br>" +
+            "Correct answer: <b>" + questions[k].o[questions[k].a] + "</b></div>";
+    }
+    $("review").innerHTML = review;
 }
-</script></body></html>
+
+$("startButton").addEventListener("click", startChallenge);
+$("nextButton").addEventListener("click", nextQuestion);
+$("prevButton").addEventListener("click", previousQuestion);
+
+})();
+</script>
+</body>
+</html>
